@@ -1,7 +1,9 @@
-function hex () {
+function ConvertTo-Hex () {
 <#
+    TODO powershell 7 has a function: format-hex
     .EXAMPLE
-    100 | hex
+
+    100 | ConvertTo-Hex
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [int]$value)
   Process  {
@@ -20,10 +22,10 @@ function decimal () {
   }    
 }
 
-function binary () {
+function ConvertTo-Bin () {
 <#
     .EXAMPLE
-        0xff | binary
+        0xff | ConvertTo-Bin
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [int]$value)
   Process  {

@@ -1,7 +1,8 @@
-function upper () {
+set-alias upper format-upper
+function Format-Upper () {
 <#
     .EXAMPLE
-        "lorem ipsum" | upper
+        "lorem ipsum" | Format-Upper
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
@@ -9,7 +10,8 @@ function upper () {
   }    
 }
 
-function lower () {
+set-alias lower format-lower
+function Format-Lower () {
 <#
     .SYNOPSIS
         Really long comment blocks are tedious to keep commented in single-line mode.
@@ -17,7 +19,7 @@ function lower () {
         Particularly when the comment must be frequently edited,
         as with the help and documentation for a function or script.
     .EXAMPLE
-        "LOREM IPSUM" | lower
+        "LOREM IPSUM" | Format-Lower
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
@@ -26,225 +28,243 @@ function lower () {
 }
 
 
-function html-decode () {
+function ConvertTo-HtmlDecoded () {
 <#
     .EXAMPLE
-        "&lt;div&gt;lorem ipsum di amet&lt;div&gt;" | html-decode
+        "&lt;div&gt;lorem ipsum di amet&lt;div&gt;" | ConvertTo-HtmlDecoded
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
-     [_]::DecodeHtml( $_)
+     [Underscore]::DecodeHtml( $_)
   }  
 }
 
-function html-encode () {
+function ConvertTo-HtmlEncoded () {
 <#
     .EXAMPLE
-        "<div>lorem ipsum di amet<div>" | html-encode
+        "<div>lorem ipsum di amet<div>" | ConvertTo-HtmlEncoded
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
-      [_]::Escape( $_) 
+      [Underscore]::Escape( $_) 
   }  
 }
 
-function base64-decode () {
+set-alias atob ConvertTo-Base64
+function ConvertTo-Base64 () {
 <#
     .EXAMPLE
-        "bG9yZW0=" | base64-decode
+        echo "lorem" | ConvertTo-B64 
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
-      [_]::FromBase64String( $_)
+      [Underscore]::Base64($value)
   }  
 }
 
-function base64-encode () {
+set-alias btoa ConvertFrom-Base64
+function ConvertFrom-Base64  () {
 <#
     .EXAMPLE
-        "lorem" | base64-encode
+        echo "bG9yZW0=" | ConvertFrom-Base64
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
-      [_]::ToBase64String( $_)
+      [Underscore]::FromBase64String($_)
   }
 }
 
-function unixts-decode () {
+set-alias from-unixts ConvertFrom-UnixTimestamp
+function ConvertFrom-UnixTimestamp () {
 <#
     .EXAMPLE
-        1591650935 | unixts-decode
+        echo 1591650935 | ConvertFrom-UnixTimestamp
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
-      [_]::FromUnixTimestamp( $_ )
+      [Underscore]::Datetime( $_ )
   }
 }
 
-function unixts-encode () {
+set-alias unixts ConvertTo-UnixTimestamp
+function ConvertTo-UnixTimestamp () {
 <#
     .EXAMPLE
-        get-date | unixts-encode
+		ConvertTo-UnixTimestamp 
+		1592821449
+		
+        Get-date | ConvertTo-UnixTimestamp
+		1592821467
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [DateTime]$value)
+
   Process  {
-      [_]::ConvertToUnixTimestamp( $_ )
+	  if($value -eq $null) {
+			[Underscore]::UnixTimestamp( $(get-date) )
+	  } else {
+		[Underscore]::UnixTimestamp( $_ )
+	  }
   }
 }
 
 
 
-function http-get () {
+function HttpGet () {
 <#
     .EXAMPLE
-        "https://example.com" | http-get
+        echo "https://httpbin.org/ip" | HttpGet
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$uri)
   Process  {
-      [_]::HttpGetStringAsync( $_).Result
+      [Underscore]::HttpGetStringAsync( $_).Result
   }
 }
 
-function get-daynames () {
+function Get-DayNames () {
 <#
     .EXAMPLE
-        "tr-TR" | get-daynames
+        "tr-TR" | Get-DayNames
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$culture)
   Process  {
-      [_]::GetDayNames( [cultureinfo]::new($_), 1) 
+      [Underscore]::GetDayNames( [cultureinfo]::new($_), 1) 
   }
 }
 
-function get-monthnames () {
+function Get-MonthNames () {
 <#
     .EXAMPLE
-        "tr-TR" | get-monthnames
+        "tr-TR" | Get-MonthName
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$culture)
   Process  {
-      [_]::GetMonthNames( [cultureinfo]::new($_)) 
+      [Underscore]::GetMonthNames( [cultureinfo]::new($_)) 
   }
 }
 
-function month-lastday () {
+function Get-LastDayOfMonth () {
 <#
     .EXAMPLE
-        get-date | month-lastday
+        Get-date | Get-LastDayOfMonth 
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [datetime]$date)
   Process  {
-      [_]::LastDayOfMonth( $_)
+      [Underscore]::LastDayOfMonth( $_)
   }
 }
 
-function month-firstday () {
+function Get-FirstDayOfMonth () {
 <#
     .EXAMPLE
-        get-date | month-firstday
+        Get-date | Get-FirstDayOfMonth
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [datetime]$date)
   Process  {
-      [_]::FirstDayOfMoth( $_)
+      [Underscore]::FirstDayOfMoth( $_)
   }
 }
 
-function md5 () {
+set-alias md5 get-md5
+function Get-MD5 () {
 <#
     .EXAMPLE
-        "lorem ipsum" | md5
+        "lorem ipsum" | Get-MD5
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
-      [_]::Md5Hash( $_) 
+      [Underscore]::Md5( $_) 
   }
 }
 
-function sha1 () {
+set-alias sha1 get-sha1
+function Get-sha1 () {
 <#
     .EXAMPLE
-        "lorem ipsum" | sha1
+        "lorem ipsum" | Get-sha1
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
-      [_]::Sha1Hash( $_) 
+      [Underscore]::Sha1( $_) 
   }
 }
 
-function sha256 () {
+set-alias sha256 get-sha256
+function Get-sha256 () {
 <#
     .EXAMPLE
-        "lorem ipsum" | sha256
+        "lorem ipsum" | Get-sha256
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
-      [_]::Sha256Hash( $_) 
+      [Underscore]::Sha256( $_) 
   }
 }
 
-function sha384 () {
+set-alias sha384 get-sha384
+function Get-sha384 () {
 <#
     .EXAMPLE
-        "lorem ipsum" | sha384
+        "lorem ipsum" | Get-Sha384
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
-      [_]::Sha384Hash( $_) 
+      [Underscore]::Sha384( $_) 
   }
 }
 
-function sha512 () {
+set-alias sha512 get-sha512
+function Get-Sha512 () {
 <#
     .EXAMPLE
-        "lorem ipsum" | sha512
+        "lorem ipsum" | Get-sha512
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
-      [_]::Sha512Hash( $_) 
+      [Underscore]::Sha512( $_) 
   }
 }
 
-function format-bytearray () {
+function ConvertTo-ByteArray () {
 <#
     .EXAMPLE
-        "hello" | format-bytearray
+        "hello" | ConvertTo-ByteArray
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
-      [_]::ToByteArrayUTF8( $_) 
+      [Underscore]::ToByteArrayUTF8( $_) 
   }
 }
 
-function markdown () {
+function get-markdown () {
 <#
     .EXAMPLE
-        "https://gist.githubusercontent.com/guneysus/895728a91810b9712d21f7c16486f1e1/raw/markdown.md" | http-get | markdown
+        "https://gist.githubusercontent.com/guneysus/895728a91810b9712d21f7c16486f1e1/raw/markdown.md" | HttpGet | get-markdown
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$content)
   Process  {
-      [_]::ParseMarkdown( $_)
+      [Underscore]::ParseMarkdown( $_)
   }
 }
 
-function rss () {
+function Get-RSS () {
 <#
     .EXAMPLE
-        "https://feedforall.com/sample.xml" | http-get | rss
+        "https://feedforall.com/sample.xml" | HttpGet | Get-RSS
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$content)
   Process  {
-      [_]::ParseRSS( $_)
+      [Underscore]::ParseRSS( $_)
   }
 }
 
-function split-words () {
+function Split-Words () {
 <#
     .EXAMPLE
         "lorem ipsum di amet" | split-words
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$content)
   Process  {
-      [_]::Words( $_)
+      [Underscore]::Words( $_)
   }
 }
 
@@ -253,7 +273,7 @@ Function Get-Tmpfilename () {
     .EXAMPLE
        Get-Tmpfilename
 #>
-    [_]::GetTempFileName( ) 
+    [Underscore]::GetTempFileName() 
 }
 
 
@@ -264,7 +284,7 @@ function deburr () {
 #>
   [cmdletbinding()] param([parameter(ValueFromPipeline)] [string]$value)
   Process  {
-      [_]::Deburr( $_)
+      [Underscore]::Deburr( $_)
   }
 }
 
@@ -275,9 +295,60 @@ function chunk () {
 #>
     [cmdletbinding()] param(
         [parameter(ValueFromPipeline)] [string]$value,
-        [Parameter(Position=0, Mandatory=$true)] [int] $size
+        
+        [Parameter(Position=0, Mandatory=$true)] 
+        [Alias("s")]
+        [int] $size
     )
   Process  {
       [System.Linq.Enumerable]::Range(0, $value.Length/$size) | % { $value.SubString($_ * $size, $size) }
   }
+}
+
+function ReplaceString () {
+<#
+    .EXAMPLE
+        echo Lorem | Replace-String "m" "n"
+#>
+    [cmdletbinding()] param(
+        [parameter(Position=0, ValueFromPipeline)] [string]$value,
+        
+        [Parameter(Position=1, Mandatory=$true)] 
+        [Alias("f")]
+        [string] $from,
+
+        [Parameter(Position=2 )] 
+        [Alias("t")]
+        [string] $to
+    )
+
+  Process  {
+      Write-Debug "Value: $value | From: $from | To: $to "
+
+      [Underscore]::Replace( $value, $from, $to)
+  }
+}
+
+function StripString () {
+<#
+    .EXAMPLE
+        (New-Guid).Guid | upper | strip-string "-"
+        Returns: 38468939B82B49FFAE8C5873E2A312A2
+#>
+    [cmdletbinding()] param(
+        [parameter(ValueFromPipeline)] [string]$value,
+        
+        [Parameter(Position=0, Mandatory=$true)] 
+        [Alias("s")]
+        [string] $strip
+    )
+  Process  {
+      [Underscore]::Strip( $value, $strip)
+  }
+}
+
+
+function Get-FileType () {
+    # TODO
+    # Get-Content -Parameter ReadCount
 }

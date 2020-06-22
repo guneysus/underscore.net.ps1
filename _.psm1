@@ -1,40 +1,46 @@
-Function get-letters () { [_]::AsciiLetters( ) }
+Function get-letters () { [Underscore]::AsciiLetters( ) }
 
-Function get-lowers () { [_]::AsciiLowercase( ) }
+Function get-lowers () { [Underscore]::AsciiLowercase( ) }
 
-Function get-puncs () { [_]::AsciiPunctuation( ) }
+Function get-puncs () { [Underscore]::AsciiPunctuation( ) }
 
-Function get-uppers () { [_]::AsciiUppercase( ) }
+Function get-uppers () { [Underscore]::AsciiUppercase( ) }
 
-Function get-digits () { [_]::Digits( ) }
+Function get-digits () { [Underscore]::Digits( ) }
 
-Function _.IsEmail ( [String] $str) { [_]::IsEmail( $str) }
+Function _.IsEmail ( [String] $str) { [Underscore]::IsEmail( $str) }
 
-Function _.IsNumber ( [String] $v,  [IFormatProvider] $formatProvider) { [_]::IsNumber( $v, $formatProvider) }
+Function _.IsNumber ( [String] $v,  [IFormatProvider] $formatProvider) { [Underscore]::IsNumber( $v, $formatProvider) }
 
-Function _.IsPhoneNumber ( [String] $str) { [_]::IsPhoneNumber( $str) }
+Function _.IsPhoneNumber ( [String] $str) { [Underscore]::IsPhoneNumber( $str) }
 
-Function _.NewHttpClient () { [_]::NewHttpClient( ) }
+Function _.NewHttpClient () { [Underscore]::NewHttpClient( ) }
 
 # _.Pad " ahmed " 80 '*'
-Function _.Pad ( [String] $v,  [Int32] $pad,  [String] $padWith) { [_]::Pad( $v, $pad, $padWith) }
+Function _.Pad ( [String] $v,  [Int32] $pad,  [String] $padWith) { [Underscore]::Pad( $v, $pad, $padWith) }
 
 # _.Password (_.AsciiLetters) 10
 # _.Password -from (_.AsciiLetters) -length 12
 # _.Password -from ( (_.AsciiLetters) + "0123456789" + (_.AsciiLetters)) -length 12
-Function generate-pass ( [char[]] $from,  [Int32] $length) { [_]::Password( $from, $length) }
 
-Function replace-string ( [String] $v,  [String] $from,  [String] $to) { [_]::Replace( $v, $from, $to) }
+Function Get-RandomPass ( [char[]] $from,  [Int32] $length) { [Underscore]::Password( $from, $length) }
 
-Function strip-string ( [String] $source,  [String] $s) { [_]::Strip( $source, $s) }
+Function Clear-Spaces ( [String] $v) { [Underscore]::Trim( $v ) }
 
-Function trim-strings ( [String] $v,  [String] $trim) { [_]::Trim( $v, $trim) }
+Function Get-LatinExtendedLetters () { [Underscore]::TurkishAndEnglishLetters( ) }
 
-Function get-LatinextendedLetters () { [_]::TurkishAndEnglishLetters( ) }
+Function Get-TurkishLetters () { [Underscore]::TurkishLetters( ) }
 
-Function get-TurkishLetters () { [_]::TurkishLetters( ) }
+Function Get-RandomBytes ( [Int32] $bytes) { [Underscore]::TokenBytes( $bytes) }
 
-Function generate-bytes ( [Int32] $bytes) { [_]::TokenBytes( $bytes) }
+Function Get-RandomKey ( [Int32] $bytes) { [Underscore]::TokenHex( $bytes) }
 
-Function generate-key ( [Int32] $bytes) { [_]::TokenHex( $bytes) }
+function Convert-Hex2Ascii() {
+    # https://stackoverflow.com/a/41763171/1766716
+    param([Parameter(Mandatory=$true, Position=0, ValueFromPipeline)] [String]$HexString)
+	
+	$asciiChars = $HexString -split ' ' | ForEach-Object {[char][byte]"0x$_"}
+	$asciiString = $asciiChars -join ''
 
+	write-host $asciiString
+}
